@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mBtnGetAll;
     private BookController mBookController;
     private ServiceConnection mServiceConnection;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         };
-        bindService(new Intent(MainActivity.this, AidlService.class), mServiceConnection, BIND_AUTO_CREATE);
+        mIntent = new Intent(MainActivity.this, AidlService.class);
+        bindService(mIntent, mServiceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -111,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //解绑定
         if (mServiceConnection != null) {
             unbindService(mServiceConnection);
+        }
+        if (mIntent != null) {
+            stopService(mIntent);
         }
     }
 }
